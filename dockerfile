@@ -1,15 +1,9 @@
-FROM openjdk:14.0-jdk-buster as dev
+FROM maven:3.5.2-jdk-14-alpine AS MAVEN_ENV
+WORKDIR /build/
+COPY pom.xml /build
+COPY src /build/src
+RUN mvn clean package -DskipTests=true
 
-WORKDIR /work
-
-COPY mvnw /work/mvnw
-COPY .mvn /work/.mvn
-COPY pom.xml /work/pom.xml
-
-
-COPY . /work/
-RUN ./mvnw install
-
-RUN chmod +x /work/target/demo-0.0.1-SNAPSHOT.jar
-
-ENTRYPOINT ["java","-jar","/work/target/demo-0.0.1-SNAPSHOT.jar"]
+FROM openjdk:14.0-jdk-buster
+COPY  --from=MAVEN_ENV /build/target/demo-0.0.1-SNAPSHOT-*.jar app.jar
+ENTRYPOINT ["java", "-jar", "app.jar"]
