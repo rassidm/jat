@@ -22,6 +22,7 @@ jobs:
       - name: Maven Verify
         run: mvn -B clean verify -DskipTests
 
+
   docker:
     name: Publish Docker Image
     runs-on: ubuntu-latest
