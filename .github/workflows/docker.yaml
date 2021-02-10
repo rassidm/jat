@@ -19,8 +19,6 @@ jobs:
           java-version: 14
       - name: Maven Package
         run: mvn -B clean package
-      - name: Maven Verify
-        run: mvn -B clean verify -DskipTests
 
 
   docker:
